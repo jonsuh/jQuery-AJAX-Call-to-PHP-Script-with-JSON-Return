@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="initial-scale=1, maximum-scale=1" />
+<title>Demo: jQuery AJAX Call to PHP Script with JSON Return</title>
+<style type="text/css">
+/*
+ * jQuery AJAX Call to PHP Script with JSON Return
+ * http://www.jonsuh.com
+ *
+ * Copyright (c) 2012 Jonathan Suh
+ * Free to use under the MIT license.
+ * http://www.opensource.org/licenses/mit-license.php
+ */
+
+body {font-family: Helvetica, Arial, sans-serif; font-size: 13px}
+.the-return {background: #f0f0f0; padding: 10px; margin-top: 15px}
+</style>
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.min.js"></script>
+<script type="text/javascript">
+$("document").ready(function(){
+	$(".js-ajax-php-json").submit(function(){
+		var data = {
+			"action": "test"
+		};
+		data = $(this).serialize() + "&" + $.param(data);
+		$.ajax({
+			type: "POST",
+			dataType: "json",
+			url: "response.php",
+			data: data,
+			success: function(data) {
+				$(".the-return").html(
+					"Favorite beverage: " + data["favorite_beverage"] + "<br />Favorite restaurant: " + data["favorite_restaurant"] + "<br />Gender: " + data["gender"] + "<br />JSON: " + data["json"]
+				);
+
+				alert("Form submitted successfully.\nReturned json: " + data["json"]);
+			}
+		});
+		return false;
+	});
+});
+</script>
+</head>
+<body>
+<p><b>jQuery AJAX Call to PHP Script with JSON Return</b></p>
+<form action="return.php" class="js-ajax-php-json" method="post" accept-charset="utf-8">
+  <input type="text" name="favorite_beverage" value="" placeholder="Favorite restaurant" />
+  <input type="text" name="favorite_restaurant" value="" placeholder="Favorite beverage" />
+  <select name="gender">
+    <option value="male">Male</option>
+    <option value="female">Female</option>
+  </select>
+  <input type="submit" name="submit" value="Submit form"  />
+</form>
+<div class="the-return">
+  [HTML is replaced when successful.]
+</div>
+<p><a href="http://www.jonsuh.com/blog/tutorials/responsive-youtube-vimeo-embed-and-html5-video-with-css">Blog article with tutorial and documentation &rarr;</a></p>
+<p><small>&copy; 2012 Jonathan Suh. <a href="http://www.jonsuh.com" title="Jonathan Suh, Web Designer and Developer">www.jonsuh.com</a></small></p>
+</body>
+</html>
